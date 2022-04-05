@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+int main()
+{
+    int* p;
+    printf("Proces macierzysty:\n");
+    printf("UID:  %d\n",getuid());
+    printf("GID:  %d\n",getgid());
+    printf("PID:  %d\n",getpid());
+    printf("PPID: %d\n",getppid());
+    printf("PGID: %d\n\n",getpgid(0));
+    printf("Procesy potomne:\n\n");
+    
+    for(int i=0; i<3; i++)
+    {
+        switch(fork())
+        {
+            case -1:
+                perror("fork error\n");
+                exit(1);
+            case 0:
+                if(setpgid(0,0)==0)
+                {
+                    printf("UID:  %d\n",getuid());
+                    printf("GID:  %d\n",getgid());
+                    printf("PID:  %d\n",getpid());
+                    printf("PPID: %d\n",getppid());
+                    printf("PGID: %d\n\n",getpgid(0));
+                    break;
+                }
+                perror("setpgid error\n");
+                exit(1);
+                
+            default:
+                wait(p);
+                break;
+        }
+    }
+    return 0;
+}
