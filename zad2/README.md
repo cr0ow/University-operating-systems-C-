@@ -1,5 +1,6 @@
 # Fork - exec
 
+## Zadanie
 ![task](ex2.png)
 
 ## Ile procesów powstanie przy n-krotnym wywołaniu funkcji `fork-exec` jak wyżej i dlaczego?
